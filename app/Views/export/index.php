@@ -19,7 +19,7 @@ $availableFields = [
 ?>
 
 <style>
-/* ── Export Page ─────────────────────────────────────────────── */
+/* â”€â”€ Export Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .export-sidebar .card { border-radius: 12px; overflow: hidden; }
 .export-sidebar .card-header { border-bottom: 1px solid rgba(0,0,0,.07); }
 
@@ -67,7 +67,7 @@ $availableFields = [
 
 <div class="row g-4 animate-fade-in-up stagger-1">
 
-    <!-- ══ LEFT SIDEBAR ══════════════════════════════════════════ -->
+    <!-- â•â• LEFT SIDEBAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <div class="col-lg-4 export-sidebar">
         <form method="POST" action="<?= $baseUrl ?>/export/custom" id="reportBuilderForm" target="_blank">
 
@@ -172,7 +172,7 @@ $availableFields = [
         </form>
     </div>
 
-    <!-- ══ RIGHT MAIN AREA ═══════════════════════════════════════ -->
+    <!-- â•â• RIGHT MAIN AREA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <div class="col-lg-8">
 
         <!-- Live Preview -->
@@ -180,7 +180,7 @@ $availableFields = [
             <div class="preview-header">
                 <h6><i class="bi bi-eye me-2"></i>Live Custom Report Preview</h6>
                 <div class="preview-meta">
-                    <span class="badge-count" id="previewMatchCount">— students</span>
+                    <span class="badge-count" id="previewMatchCount">&mdash; students</span>
                     <span class="badge-preview">Top 3 rows</span>
                 </div>
             </div>
@@ -246,7 +246,7 @@ $availableFields = [
                                 <td class="px-4 fw-semibold text-dark"><?= htmlspecialchars($s['matric_no']) ?></td>
                                 <td>
                                     <div class="fw-semibold text-dark"><?= htmlspecialchars($s['name']) ?></div>
-                                    <div class="small text-muted"><?= htmlspecialchars($s['programme'] ?? '—') ?></div>
+                                    <div class="small text-muted"><?= htmlspecialchars($s['programme'] ?? '&mdash;') ?></div>
                                 </td>
                                 <td>
                                     <?php
@@ -320,7 +320,7 @@ function submitStandardExport(type) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    // ── Quick search ──────────────────────────────────────────
+    // â”€â”€ Quick search â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const input    = document.getElementById('exportSearchInput');
     const clearBtn = document.getElementById('exportClearBtn');
     const tbody    = document.getElementById('exportTableBody');
@@ -356,10 +356,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ── Select2 ───────────────────────────────────────────────
+    // â”€â”€ Select2 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     $('.select2-multiple').select2({ width: '100%', allowClear: true });
 
-    // ── Live Preview ──────────────────────────────────────────
+    // â”€â”€ Live Preview â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const previewContainer = document.getElementById('previewContainer');
     const previewMatchCount = document.getElementById('previewMatchCount');
     let fetchTimeout;
@@ -370,11 +370,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (selectedFields.length === 0) {
             previewContainer.innerHTML = '<div class="text-muted text-center py-4 small">Select fields above to generate a live preview.</div>';
-            if (previewMatchCount) previewMatchCount.textContent = '— students';
+            if (previewMatchCount) previewMatchCount.textContent = '&mdash; students';
             return;
         }
 
-        previewContainer.innerHTML = '<div class="text-center py-4 text-muted small"><span class="spinner-border spinner-border-sm text-primary me-2"></span>Generating preview…</div>';
+        previewContainer.innerHTML = '<div class="text-center py-4 text-muted small"><span class="spinner-border spinner-border-sm text-primary me-2"></span>Generating previewâ€¦</div>';
 
         fetch('<?= $baseUrl ?>/export/preview', {
             method: 'POST',
@@ -405,15 +405,16 @@ document.addEventListener('DOMContentLoaded', function() {
             data.data.forEach(row => {
                 html += '<tr>';
                 data.fields.forEach(key => {
-                    html += `<td class="px-3 text-truncate" style="max-width:180px;">${row[key] || '—'}</td>`;
+                    html += `<td class="px-3 text-truncate" style="max-width:180px;">${row[key] || '&mdash;'}</td>`;
                 });
                 html += '</tr>';
             });
             html += '</tbody></table></div>';
             previewContainer.innerHTML = html;
         })
-        .catch(() => {
-            previewContainer.innerHTML = '<div class="alert alert-danger m-2 mb-0">Error loading preview.</div>';
+        .catch(err => {
+            console.error('Preview fetch error:', err);
+            previewContainer.innerHTML = '<div class="alert alert-danger m-2 mb-0"><i class="bi bi-exclamation-triangle-fill me-1"></i>Error loading preview. Check the browser console for details.</div>';
         });
     }
 

@@ -496,35 +496,50 @@ class ExportController extends Controller
     public function apiPreview(): void
     {
         Middleware::requireLogin();
-        header('Content-Type: application/json');
 
-        $fields = $_POST['fields'] ?? [];
-        if (empty($fields)) {
-            echo json_encode(['error' => 'No fields selected.']);
-            return;
+        // Discard any stray output (warnings/notices) that would corrupt the JSON response
+        if (ob_get_level()) {
+            ob_end_clean();
         }
+        ob_start();
 
-        $filters = $this->parseFiltersFromPost();
-        $students = $this->studentModel->getFiltered($filters);
-        
-        // Take top 3 for preview
-        $previewData = [];
-        $limit = min(3, count($students));
-        for ($i = 0; $i < $limit; $i++) {
-            $row = [];
-            $fullDetails = $this->studentModel->getFullDetails($students[$i]['student_id']);
-            foreach ($fields as $f) {
-                $row[$f] = $this->extractFieldValue($fullDetails, $f);
+        try {
+            header('Content-Type: application/json');
+
+            $fields = $_POST['fields'] ?? [];
+            if (empty($fields)) {
+                ob_end_clean();
+                echo json_encode(['error' => 'No fields selected.']);
+                return;
             }
-            $previewData[] = $row;
-        }
 
-        echo json_encode([
-            'headers'       => array_map(fn($f) => ucwords(str_replace('_', ' ', $f)), $fields),
-            'fields'        => array_values($fields),
-            'data'          => $previewData,
-            'total_matches' => count($students)
-        ]);
+            $filters  = $this->parseFiltersFromPost();
+            $students = $this->studentModel->getFiltered($filters);
+
+            // Take top 3 for preview
+            $previewData = [];
+            $limit = min(3, count($students));
+            for ($i = 0; $i < $limit; $i++) {
+                $row         = [];
+                $fullDetails = $this->studentModel->getFullDetails((int)$students[$i]['student_id']);
+                foreach ($fields as $f) {
+                    $row[$f] = $this->extractFieldValue($fullDetails, $f);
+                }
+                $previewData[] = $row;
+            }
+
+            ob_end_clean();
+            echo json_encode([
+                'headers'       => array_map(fn($f) => ucwords(str_replace('_', ' ', $f)), $fields),
+                'fields'        => array_values($fields),
+                'data'          => $previewData,
+                'total_matches' => count($students),
+            ]);
+        } catch (\Throwable $e) {
+            ob_end_clean();
+            http_response_code(500);
+            echo json_encode(['error' => 'Preview failed: ' . $e->getMessage()]);
+        }
     }
 
     /**
