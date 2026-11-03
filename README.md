@@ -45,6 +45,18 @@ It streamlines the management and tracking of postgraduate students (Masters, Ph
 
 ---
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7d955cc2-434e-4618-86db-88b579535951" width="800" alt="Banner">
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e924fd84-9c22-4c4a-8e73-4424aae22a42" width="800" alt="Banner">
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5ec770f0-9446-44c9-8883-032e1d030707" width="800" alt="Banner">
+</p>
+
+---
+
 ## 🛠️ Technology Stack
 
 - **Backend**: Vanilla PHP 8+ using a custom MVC architecture.
